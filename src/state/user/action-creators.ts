@@ -1,6 +1,6 @@
 import { useApi } from '@hooks/';
 import { Dispatch } from 'redux';
-import types from './user.types';
+import { UserActionTypes as types } from './action-types';
 
 export const getUser = () => async (dispatch: Dispatch) => {
   const api = useApi();

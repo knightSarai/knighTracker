@@ -1,4 +1,4 @@
-import types from './user.types';
+import { UserActionTypes as types } from './action-types';
 import { UserAction } from './actions';
 import { User } from '@models/';
 

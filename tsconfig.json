@@ -28,6 +28,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/hooks/useApi.js"]
-  // "include": ["src", "global"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

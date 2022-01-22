@@ -31,7 +31,7 @@ export const useApi = () => {
                 .then(response => {
                     localStorage.setItem('accessToken', response.data.access);
                     apiInstance.defaults.headers.common['Authorization'] = 'JWT ' + response.data.access;
-                    config.headers.common['Authorization'] = 'JWT ' + response.data.access;
+                    config.headers['Authorization'] = 'JWT ' + response.data.access;
 
                     return apiInstance(config);
                 })

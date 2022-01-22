@@ -2,7 +2,7 @@ import { UserActionTypes as types } from './action-types';
 import { UserAction } from './actions';
 import { User } from '@models/';
 
-const initialUserState = {
+export const initialUserState = {
   id: NaN,
   traineeID: NaN,
   username: '',
@@ -18,7 +18,7 @@ export const userReducer = (
 ) => {
   switch (action.type) {
     case types.SET_USER:
-      return { isAuthenticated: true, ...action.payload };
+      return { ...action.payload };
     default:
       return state;
   }

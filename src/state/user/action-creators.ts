@@ -11,6 +11,7 @@ export const getUser = () => async (dispatch: Dispatch) => {
       payload: {
         ...data.user,
         traineeID: data.trainee_id,
+        isAuthenticated: true,
       },
     });
   } catch (err) {

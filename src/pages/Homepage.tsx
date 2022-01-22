@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Typography,
   Link,
@@ -8,16 +6,15 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useApi, useTypedSelector } from '@hooks/';
+import { useDispatch } from 'react-redux';
 import { API_URL } from '@config/';
-import { getUser } from '@state/';
+import { UserActionTypes as types } from '@state/';
 
 export const HomePage: React.FC = () => {
-  const dispatch = useDispatch();
   const { user } = useTypedSelector((state) => state);
-  // const navigate = useNavigate();
-  // const getUser = useActions();
+  const dispatch = useDispatch();
   const api = useApi();
 
   const getUserFun = async () => {
@@ -36,11 +33,14 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      dispatch(getUser());
-    })();
-  }, [dispatch]);
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    dispatch({
+      type: types.SET_USER,
+      payload: {},
+    });
+  };
 
   return (
     <Container maxWidth="sm">
@@ -56,6 +56,7 @@ export const HomePage: React.FC = () => {
       <Box sx={{ marginLeft: '5rem' }}>
         <Button onClick={getUserFun}>Get User</Button>
         <Button onClick={getMeasurements}>Get Measurements</Button>
+        <Button onClick={logout}>Logout</Button>
       </Box>
     </Container>
   );

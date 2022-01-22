@@ -1,20 +1,10 @@
-import {
-  Typography,
-  Link,
-  Container,
-  Divider,
-  Box,
-  Button,
-} from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Typography, Divider, Box, Button } from '@mui/material';
 import { useApi, useTypedSelector } from '@hooks/';
-import { useDispatch } from 'react-redux';
 import { API_URL } from '@config/';
-import { UserActionTypes as types } from '@state/';
+import Layout from '@components/Layout';
 
 export const HomePage: React.FC = () => {
   const { user } = useTypedSelector((state) => state);
-  const dispatch = useDispatch();
   const api = useApi();
 
   const getUserFun = async () => {
@@ -33,32 +23,16 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    dispatch({
-      type: types.SET_USER,
-      payload: {},
-    });
-  };
-
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h1">Home</Typography>
-      <Link component={RouterLink} to="/auth/login">
-        Login
-      </Link>
+    <Layout>
+      <Typography variant="h3">Home</Typography>
       <Divider />
-      <Link component={RouterLink} to="/auth/register">
-        Register
-      </Link>
       <Typography>User: {user.username}</Typography>
       <Box sx={{ marginLeft: '5rem' }}>
         <Button onClick={getUserFun}>Get User</Button>
         <Button onClick={getMeasurements}>Get Measurements</Button>
-        <Button onClick={logout}>Logout</Button>
       </Box>
-    </Container>
+    </Layout>
   );
 };
 

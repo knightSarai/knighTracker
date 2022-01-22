@@ -13,6 +13,15 @@ const theme = createTheme({
       main: red.A400,
     },
   },
+  components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'none',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

@@ -63,8 +63,8 @@ export const LoginPage: React.FC = () => {
           />
         </Box>
         <Button onClick={login}>Login</Button>
-        <Link component={RouterLink} to="/">
-          Home
+        <Link component={RouterLink} to="/auth/register">
+          Register
         </Link>
       </Box>
     </Layout>

@@ -10,7 +10,7 @@
       "@state*": ["state/*"],
       "@config*": ["config/*"],
       "@global*": ["global/*"],
-      "@/utils/*": ["utils/*"],
+      "@utils*": ["utils/*"],
       "@pages*": ["pages/*"],
       "@models*": ["models/*"]
     },

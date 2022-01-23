@@ -18,9 +18,7 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (user.isAuthenticated) {
-      navigate(-1);
-    }
+    if (user.isAuthenticated) navigate(-1);
   }, [navigate, user]);
 
   const login = async () => {

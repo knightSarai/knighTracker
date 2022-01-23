@@ -10,12 +10,12 @@ import theme from '@global/theme';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />
-      </ReduxProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ReduxProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

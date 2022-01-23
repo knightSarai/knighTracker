@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '@hooks/';
 import { Link as RouterLink } from 'react-router-dom';
 import { UserActionTypes as types } from '@state/';

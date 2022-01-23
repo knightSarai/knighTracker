@@ -1,22 +1,22 @@
 import { Typography, Divider, Box, Button } from '@mui/material';
-import { useApi, useTypedSelector } from '@hooks/';
-import { API_URL } from '@config/';
+import { useTypedSelector } from '@hooks/';
+import { Api } from '@global/';
 import Layout from '@components/Layout';
 
 export const HomePage: React.FC = () => {
   const { user } = useTypedSelector((state) => state);
-  const api = useApi();
+  const api = Api.getInstance();
 
   const getUserFun = async () => {
     try {
-      const { data } = await api.get(`${API_URL}/auth/user`);
+      const { data } = await api.get('auth/user/');
       console.log(data);
     } catch (err) {}
   };
 
   const getMeasurements = async () => {
     try {
-      const { data } = await api.get(`${API_URL}/trainee/measurements`);
+      const { data } = await api.get('trainee/measurements');
       console.log(data);
     } catch (err) {
       console.log(err);

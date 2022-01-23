@@ -1,9 +1,11 @@
-import { useApi } from '@hooks/';
 import { Dispatch } from 'redux';
 import { UserActionTypes as types } from './action-types';
 
+import { Api } from '@global/';
+
 export const getUser = () => async (dispatch: Dispatch) => {
-  const api = useApi();
+  const api = Api.getInstance();
+
   try {
     const { data } = await api.get('/auth/user/');
     dispatch({

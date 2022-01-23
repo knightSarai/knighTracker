@@ -5,14 +5,13 @@ import { useTypedSelector } from '@hooks/';
 import { Typography, Input, Link, Box, Button } from '@mui/material';
 import Layout from '@components/Layout';
 import { getUser } from '@state/';
-import { useApi } from '@hooks/';
-import { API_URL } from '@config/';
+import { Api } from '@global/';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const api = useApi();
+  const api = Api.getInstance();
 
   const { user } = useTypedSelector((state) => state);
   const [username, setUsername] = useState('');
@@ -26,17 +25,14 @@ export const LoginPage: React.FC = () => {
 
   const login = async () => {
     try {
-      const { data } = await api.post(`${API_URL}/auth/login/`, {
+      const { data } = await api.post('/auth/login/', {
         username,
         password,
       });
+
       localStorage.setItem('accessToken', data.access);
       localStorage.setItem('refreshToken', data.refresh);
-
-      api.defaults.headers.common = {
-        ...api.defaults.headers.common,
-        Authorization: `JWT ${data.access}`,
-      };
+      Api.setAuth(data.access);
 
       dispatch(getUser());
     } catch (err) {

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useTypedSelector } from '@hooks/';
-import { Typography, Input, Link, Box, Button } from '@mui/material';
+import { Typography, Link, Box, Button, Grid, TextField } from '@mui/material';
 import Layout from '@components/Layout';
 import { getUser } from '@state/';
 import { Api } from '@global/';
@@ -14,14 +14,11 @@ export const LoginPage: React.FC = () => {
   const api = Api.getInstance();
 
   const { user } = useTypedSelector((state) => state);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
   useEffect(() => {
     if (user.isAuthenticated) navigate(-1);
   }, [navigate, user]);
 
-  const login = async () => {
+  const login = async (username: string, password: string) => {
     try {
       const { data } = await api.post('/auth/login/', {
         username,
@@ -38,28 +35,67 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const data = new FormData(evt.currentTarget);
+    login(data.get('username') as string, data.get('password') as string);
+  };
+
   return (
     <Layout>
-      <Typography variant="h1">Login Page</Typography>
-      <Box sx={{ marginLeft: '5rem' }}>
-        <Box>
-          <Input
-            onChange={(evt) => setUsername(evt.target.value)}
-            value={username}
-            placeholder="Username"
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Sign In
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="User Name"
+            name="username"
+            autoComplete="username"
+            autoFocus
           />
-        </Box>
-        <Box>
-          <Input
-            onChange={(evt) => setPassword(evt.target.value)}
-            value={password}
-            placeholder="Password"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
           />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link component={RouterLink} to="/auth/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-        <Button onClick={login}>Login</Button>
-        <Link component={RouterLink} to="/auth/register">
-          Register
-        </Link>
       </Box>
     </Layout>
   );

@@ -21,19 +21,18 @@ export const RegisterPage: React.FC = () => {
         if (user.isAuthenticated) navigate('/');
     }, [navigate, user]);
 
-    const register = async (FormData: object) => {
+    const register = async (formData: FormData) => {
         try {
-            await api.post('/auth/signup/', FormData);
+            await api.post('/auth/signup/', formData);
             navigate('/auth/login/')
         } catch (err) {
             console.log(err);
         }
     };
-    const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
         const data = new FormData(evt.currentTarget);
-        register(data as object)
-
+        await register(data)
     };
 
     return (

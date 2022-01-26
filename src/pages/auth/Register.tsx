@@ -113,14 +113,16 @@ export const RegisterPage: React.FC = () => {
                                 autoComplete="new-password-confirm"
                             />
                         </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Sign Up
-                        </Button>
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{mt: 2, mb: 1}}
+                            >
+                                Sign Up
+                            </Button>
+                        </Grid>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link component={RouterLink} to="/auth/login/" variant="body2">

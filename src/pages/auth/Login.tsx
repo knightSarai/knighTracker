@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useTypedSelector} from '@hooks/';
@@ -6,6 +6,7 @@ import {Typography, Link, Box, Button, Grid, TextField} from '@mui/material';
 import Layout from '@components/Layout';
 import {getUser} from '@state/';
 import {Api} from '@global/';
+import FlexedBox from "@components/FlexedBox";
 
 export const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -43,14 +44,7 @@ export const LoginPage: React.FC = () => {
 
     return (
         <Layout>
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <FlexedBox styles={{marginTop: 8}}>
                 <Typography component="h1" variant="h5">
                     Sign In
                 </Typography>
@@ -96,7 +90,7 @@ export const LoginPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Box>
-            </Box>
+            </FlexedBox>
         </Layout>
     );
 };

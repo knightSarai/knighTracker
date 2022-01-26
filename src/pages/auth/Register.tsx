@@ -8,6 +8,7 @@ import {
     Link
 } from '@mui/material';
 import Layout from '@components/Layout';
+import FlexedBox from "@components/FlexedBox";
 import {Api} from "@global/";
 import {useTypedSelector} from "@hooks/";
 import {useEffect} from "react";
@@ -37,14 +38,7 @@ export const RegisterPage: React.FC = () => {
 
     return (
         <Layout>
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <FlexedBox styles={{marginTop: 8}}>
                 <Typography component="h1" variant="h5">
                     Sign Up
                 </Typography>
@@ -132,7 +126,7 @@ export const RegisterPage: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Box>
-            </Box>
+            </FlexedBox>
         </Layout>
     );
 };

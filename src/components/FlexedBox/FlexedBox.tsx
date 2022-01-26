@@ -1,9 +1,7 @@
 import {Box} from "@mui/material";
 
 interface FlexedBoxProps {
-    styles?: {
-        [key: string]: string | number;
-    }
+    styles?: { [key: string]: string | number; }
 }
 
 export const FlexedBox: React.FC<FlexedBoxProps> = ({styles, children}) => {

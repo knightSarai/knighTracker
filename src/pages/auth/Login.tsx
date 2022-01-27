@@ -1,14 +1,22 @@
-import React, {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {useTypedSelector} from '@hooks/';
-import {Typography, Link, Box, Button, Grid, TextField} from '@mui/material';
-import Layout from '@components/Layout';
-import {getUser} from '@state/';
-import {Api} from '@global/';
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {useTypedSelector} from "@hooks/";
+import {Typography, Link, Box, Button, Grid, TextField} from "@mui/material";
+import Layout from "@components/Layout";
+import {getUser} from "@state/";
+import {Api} from "@global/";
 import FlexedBox from "@components/FlexedBox";
+import {useForm} from "@hooks/";
+
+interface IFormState {
+    username: string;
+    password: string;
+}
 
 export const LoginPage: React.FC = () => {
+    const initialValues = {username: "", password: ""};
+    const {formState, handleChange, handleSubmit} = useForm<IFormState>(initialValues);
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -21,13 +29,13 @@ export const LoginPage: React.FC = () => {
 
     const login = async (username: string, password: string) => {
         try {
-            const {data} = await api.post('/auth/login/', {
+            const {data} = await api.post("/auth/login/", {
                 username,
                 password,
             });
 
-            localStorage.setItem('accessToken', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
+            localStorage.setItem("accessToken", data.access);
+            localStorage.setItem("refreshToken", data.refresh);
             Api.setAuth(data.access);
 
             dispatch(getUser());
@@ -36,11 +44,8 @@ export const LoginPage: React.FC = () => {
         }
     };
 
-    const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-        const data = new FormData(evt.currentTarget);
-        await login(data.get('username') as string, data.get('password') as string);
-    };
+    const onSubmit = (formSate: IFormState) =>
+        login(formSate.username, formState.password);
 
     return (
         <Layout>
@@ -48,7 +53,12 @@ export const LoginPage: React.FC = () => {
                 <Typography component="h1" variant="h5">
                     Sign In
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    noValidate
+                    sx={{mt: 1}}
+                >
                     <TextField
                         margin="normal"
                         required
@@ -58,6 +68,8 @@ export const LoginPage: React.FC = () => {
                         name="username"
                         autoComplete="username"
                         autoFocus
+                        onChange={handleChange}
+                        value={formState.username}
                     />
                     <TextField
                         margin="normal"
@@ -68,6 +80,8 @@ export const LoginPage: React.FC = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={handleChange}
+                        value={formState.password}
                     />
                     <Button
                         type="submit"

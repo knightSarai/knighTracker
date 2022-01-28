@@ -1,7 +1,16 @@
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import {Api} from "@global/";
 import {getUser} from "@state/";
+
+export interface IRegisterState{
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+}
 
 export const useAuth = () => {
     const api = Api.getInstance();
@@ -24,9 +33,12 @@ export const useAuth = () => {
         }
     };
 
-    const register = async (formData: FormData) => {
+    const register = async (registerData: IRegisterState) => {
         try {
-            await api.post('/auth/signup/', formData);
+            await api.post('/auth/signup/', {
+                ...registerData,
+                password_confirm: registerData.passwordConfirm
+            });
             navigate('/auth/login/')
         } catch (err) {
             console.log(err);

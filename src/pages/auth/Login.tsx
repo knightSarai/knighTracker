@@ -1,11 +1,9 @@
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {useTypedSelector} from "@hooks/";
+import {useAuth, useTypedSelector} from "@hooks/";
 import {Typography, Link, Box, Button, Grid, TextField} from "@mui/material";
 import Layout from "@components/Layout";
-import {getUser} from "@state/";
-import {Api} from "@global/";
 import FlexedBox from "@components/FlexedBox";
 import {useForm} from "@hooks/";
 
@@ -18,34 +16,13 @@ export const LoginPage: React.FC = () => {
     const initialValues = {username: "", password: ""};
     const {formState, handleChange, handleSubmit} = useForm<IFormState>(initialValues);
     const navigate = useNavigate();
-
-    const dispatch = useDispatch();
-    const api = Api.getInstance();
+    const {login} = useAuth();
     const {user} = useTypedSelector((state) => state);
+    const onSubmit = (formState: IFormState) => login(formState.username, formState.password);
 
     useEffect(() => {
         if (user.isAuthenticated) navigate(-1);
     }, [navigate, user]);
-
-    const login = async (username: string, password: string) => {
-        try {
-            const {data} = await api.post("/auth/login/", {
-                username,
-                password,
-            });
-
-            localStorage.setItem("accessToken", data.access);
-            localStorage.setItem("refreshToken", data.refresh);
-            Api.setAuth(data.access);
-
-            dispatch(getUser());
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const onSubmit = (formSate: IFormState) =>
-        login(formSate.username, formState.password);
 
     return (
         <Layout>

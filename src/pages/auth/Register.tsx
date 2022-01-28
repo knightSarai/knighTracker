@@ -10,31 +10,53 @@ import {
 import Layout from '@components/Layout';
 import FlexedBox from "@components/FlexedBox";
 import {Api} from "@global/";
-import {useTypedSelector} from "@hooks/";
+import {useForm, useTypedSelector} from "@hooks/";
 import {useEffect} from "react";
 
+interface IFormState {
+    username:string;
+    firstname:string;
+    lastname:string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+}
+
 export const RegisterPage: React.FC = () => {
+    const initialValues ={
+        username:'',
+        firstname:'',
+        lastname:'',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+    }
     const navigate = useNavigate()
     const api = Api.getInstance()
     const {user} = useTypedSelector((state) => state);
+    const {
+        formState,
+        handleChange,
+        handleSubmit
+    } = useForm<IFormState>(initialValues);
 
     useEffect(() => {
         if (user.isAuthenticated) navigate('/');
     }, [navigate, user]);
 
-    const register = async (formData: FormData) => {
+    const register = async (registerData: IFormState) => {
         try {
-            await api.post('/auth/signup/', formData);
+            await api.post('/auth/signup/', {
+                ...registerData,
+                password_confirm: formState.passwordConfirm
+            });
             navigate('/auth/login/')
         } catch (err) {
             console.log(err);
         }
     };
-    const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-        const data = new FormData(evt.currentTarget);
-        await register(data)
-    };
+
+    const onSubmit = (formState: IFormState) => register(formState)
 
     return (
         <Layout>
@@ -42,7 +64,7 @@ export const RegisterPage: React.FC = () => {
                 <Typography component="h1" variant="h5">
                     Sign Up
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{mt: 3}}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -52,6 +74,8 @@ export const RegisterPage: React.FC = () => {
                                 label="Username"
                                 name="username"
                                 autoComplete="username"
+                                value={formState.username}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -63,6 +87,8 @@ export const RegisterPage: React.FC = () => {
                                 id="firstname"
                                 label="First Name"
                                 autoFocus
+                                value={formState.firstname}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -73,6 +99,8 @@ export const RegisterPage: React.FC = () => {
                                 label="Last Name"
                                 name="lastname"
                                 autoComplete="family-name"
+                                value={formState.lastname}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -83,6 +111,8 @@ export const RegisterPage: React.FC = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={formState.email}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -94,17 +124,21 @@ export const RegisterPage: React.FC = () => {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                value={formState.password}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 required
                                 fullWidth
-                                name="password_confirm"
-                                label="Password_confirm"
+                                name="passwordConfirm"
+                                label="Password Confirm"
                                 type="password"
-                                id="password_confirm"
+                                id="passwordConfirm"
                                 autoComplete="new-password-confirm"
+                                value={formState.passwordConfirm}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12}>

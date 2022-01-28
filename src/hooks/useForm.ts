@@ -1,29 +1,27 @@
-import { useState } from "react";
+import {useState} from "react";
 
-export function useForm<FormField>(initialValues: FormField) {
-  const [formState, setFormState] = useState<FormField>(initialValues);
-  const [touched, setTouched] = useState({});
+export function useForm<FormFields>(initialValues: FormFields) {
+    const [formState, setFormState] = useState<FormFields>(initialValues);
 
-  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [evt.target.name]: evt.target.value,
-    }));
-  };
-
-  const valid = true;
-  const handleSubmit = (onSubmit: (formState: FormField) => void) => {
-    return (evt: React.FormEvent<HTMLFormElement>) => {
-      evt.preventDefault();
-      if (valid) onSubmit(formState);
+    const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        setFormState((prevState) => ({
+            ...prevState,
+            [evt.target.name]: evt.target.value
+        }));
     };
-  };
 
-  return {
-    formState,
-    handleChange,
-    handleSubmit,
-  };
+    const handleSubmit = (onSubmit: (formState: FormFields) => void) => {
+        return (evt: React.FormEvent<HTMLFormElement>) => {
+            evt.preventDefault();
+            onSubmit(formState);
+        };
+    };
+
+    return {
+        formState,
+        handleChange,
+        handleSubmit,
+    };
 }
 
 export default useForm;
